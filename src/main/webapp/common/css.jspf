@@ -1,0 +1,6 @@
+<!-- sweetalert2 This is what you need -->
+<link rel="stylesheet" href="${ctxstatic}/vendor/sweetalert2-master/dist/sweetalert2.min.css">
+
+<!-- bootstrap table -->  
+<link rel="stylesheet" href="${ctxstatic}/vendor/bootstrap-table-develop/dist/bootstrap-table.css">  
+<link rel="stylesheet" href="${ctxstatic}/vendor/bootstrap-table-develop/dist/bootstrap-table.min.css">

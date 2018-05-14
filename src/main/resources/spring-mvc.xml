@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	<context:component-scan base-package="com.wang.controller"/>
+	
+	<!--注解映射器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+	<!--注解适配器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/> -->
+	
+	<!-- 
+	使用 mvc:annotation-driven代替上边注解映射器和注解适配器配置
+	mvc:annotation-driven默认加载很多的参数绑定方法
+	比如json转换解析器就默认加载了
+	-->
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+            <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+            <!-- FastJson -->
+            <bean id="fastJsonHttpMessageConverter"
+                  class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="features">
+                    <array value-type="com.alibaba.fastjson.serializer.SerializerFeature">
+                        <!-- 避免循环引用 -->
+                        <value>DisableCircularReferenceDetect</value>
+                        <!-- 是否输出值为null的字段 -->
+                        <value>WriteMapNullValue</value>
+                        <!-- 数值字段如果为null,输出为0,而非null -->
+                        <value>WriteNullNumberAsZero</value>
+                        <!-- 字符类型字段如果为null,输出为"",而非null  -->
+                        <value>WriteNullStringAsEmpty</value>
+                        <!-- List字段如果为null,输出为[],而非null -->
+                        <value>WriteNullListAsEmpty</value>
+                        <!-- Boolean字段如果为null,输出为false,而非null -->
+                        <value>WriteNullBooleanAsFalse</value>
+                    </array>
+                </property>
+            </bean>
+        </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	    <!-- 配置jsp路径的前缀 -->
+		<property name="prefix" value="/"/>
+		<!-- 配置jsp路径的后缀 -->
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!-- 类型转换器 -->
+	<!-- <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	  <property name="converters">
+	    <list>
+	      <bean class="com.wang.converter.DateConverter"/>
+	    </list>
+	  </property>
+	</bean> -->
+	
+	<!-- 校验器 -->
+	<!-- <bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		hibernate校验器
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		指定校验使用的资源文件，在文件中配置校验错误信息，如果不指定则默认使用classpath下的ValidationMessages.properties
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean> -->
+	<!-- 校验错误信息配置文件 -->
+	<!-- <bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		资源文件名
+		<property name="basenames">   
+       	 <list>    
+            <value>classpath:ItemValidationMessages</value> 
+       	 </list>   
+    	</property>
+		资源文件编码格式
+		<property name="fileEncodings" value="utf-8" />
+		对资源文件内容缓存时间，单位秒
+		<property name="cacheSeconds" value="120" />
+	</bean> -->
+	
+	<!-- 全局异常处理器 -->
+	<!-- 已经实现了HadlerExceptionResolver接口就是全局异常处理器 -->
+	<!-- <bean class="com.wang.exception.ExceptionResolver"></bean> -->
+	
+	<!-- 静态资源映射 -->
+	<mvc:resources location="/static/" mapping="/static/**" />
+	<mvc:resources location="/upload/" mapping="/upload/**" />
+	
+	<!-- 上传限制 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 上传文件大小限制为31M，31*1024*1024 -->
+        <property name="maxUploadSize" value="32505856"/>
+        <property name="defaultEncoding">    
+	        <value>utf-8</value>    
+	    </property>
+    </bean>
+	
+</beans>
