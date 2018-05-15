@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ import com.wang.service.IUserService;
  */
 @Controller
 @RequestMapping("/user")
+@Api("user")
 public class UserController extends BaseController {
 	
 	private final IUserService userService;
@@ -74,7 +79,8 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userDelete")
-    public Object userDelete(@RequestParam(value = "id", required = false) Long id) {
+    @ApiOperation(value = "删除用户", notes = "删除用户返回JSON")
+    public Object userDelete(@ApiParam(required = true, name = "id", value = "用户ID") @RequestParam(value = "id") Long id) {
         return userService.deleteById(id) ? renderSuccess("删除成功") : renderError("删除失败");
     }
 
@@ -99,7 +105,8 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userSave")
-    public Object userSave(User user) {
+    @ApiOperation(value = "添加或修改用户信息", notes = "添加或修改用户信息返回JSON")
+    public Object userSave(@ApiParam(required = false, name = "User", value = "用户引用") User user) {
         if (user.getId() == null) {
         	user.setRegtime(new Date());
             return userService.insert(user) ? renderSuccess("添加成功") : renderError("添加失败");

@@ -1,7 +1,8 @@
 # SSMBootstrapTable
 
 #### 项目介绍
-SSMyBatis Plus + BootStrapTable示例
+1. SSMyBatis Plus + BootStrapTable示例
+2. 新增Swagger整合测试
 
 #### 软件架构
 软件架构说明
