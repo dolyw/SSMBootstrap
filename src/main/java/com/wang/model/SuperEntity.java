@@ -1,5 +1,7 @@
 package com.wang.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,7 @@ public class SuperEntity implements Serializable {
     /**
      * 用户ID
      */
+    @ApiModelProperty(value="ID",name="id")
     private Long id;
 
     public Long getId() {

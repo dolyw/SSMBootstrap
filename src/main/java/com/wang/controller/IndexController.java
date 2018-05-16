@@ -2,6 +2,7 @@ package com.wang.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @Desc 主页
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/index")
+@ApiIgnore
 public class IndexController extends BaseController {
 
 	@RequestMapping("/index")

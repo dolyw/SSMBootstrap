@@ -3,12 +3,20 @@ package com.wang.model;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @TableName("user")
+@ApiModel(value="User",description="用户对象user")
 public class User extends SuperEntity {
+
+	@ApiModelProperty(value="帐号",name="account")
 	private String account;
+	@ApiModelProperty(value="密码",name="password")
 	private String password;
+	@ApiModelProperty(value="用户名",name="username")
 	private String username;
+	@ApiModelProperty(value="注册时间",name="regtime")
 	private Date regtime;
 	public String getAccount() {
 		return account;

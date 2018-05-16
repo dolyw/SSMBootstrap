@@ -5,19 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wang.model.User;
 import com.wang.service.IUserService;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @Desc User操作Controller
@@ -26,7 +26,7 @@ import com.wang.service.IUserService;
  */
 @Controller
 @RequestMapping("/user")
-@Api("user")
+@Api(tags = "用户API")
 public class UserController extends BaseController {
 	
 	private final IUserService userService;
@@ -50,13 +50,19 @@ public class UserController extends BaseController {
 		return "admin/user/userList";
 	}*/
     // AJAX获取User
+    @ApiIgnore
     @RequestMapping("/userList")
 	public String userList() {
 		return "admin/user/userList";
 	}
-    
+
     @ResponseBody
 	@RequestMapping("/getUserList")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNumber", required = true, value = "页数", dataType = "String"),
+            @ApiImplicitParam(name = "pageSize", required = true, value = "条数", dataType = "String")
+    })
+    @ApiOperation(value = "获取所有用户", httpMethod = "GET", notes = "获取所有用户返回JSON")
     public Object getUserList(String pageNumber, String pageSize, HttpServletRequest request) {
         if(!StringUtils.isNotBlank(pageNumber) & !StringUtils.isNotBlank(pageSize)){
             pageNumber="1";
@@ -79,8 +85,9 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userDelete")
-    @ApiOperation(value = "删除用户", notes = "删除用户返回JSON")
-    public Object userDelete(@ApiParam(required = true, name = "id", value = "用户ID") @RequestParam(value = "id") Long id) {
+    @ApiImplicitParam(name = "id", required = true, value = "用户ID", dataType = "Long")
+    @ApiOperation(value = "删除单个用户", httpMethod = "GET", notes = "根据ID删除单个用户返回JSON")
+    public Object userDelete(@RequestParam(value = "id") Long id) {
         return userService.deleteById(id) ? renderSuccess("删除成功") : renderError("删除失败");
     }
 
@@ -91,6 +98,7 @@ public class UserController extends BaseController {
      * @return
      */
 	@RequestMapping("/userEdit")
+    @ApiIgnore
     public String userEdit(Model model, @RequestParam(value = "id", required = false) Long id) {
 		if (id != null) {
 			model.addAttribute("user", userService.selectById(id));
@@ -105,8 +113,13 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userSave")
-    @ApiOperation(value = "添加或修改用户信息", notes = "添加或修改用户信息返回JSON")
-    public Object userSave(@ApiParam(required = false, name = "User", value = "用户引用") User user) {
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功"),
+            @ApiResponse(code = 204, message = "没有返回任何信息"),
+            @ApiResponse(code = 401, message = "没有权限")
+    })
+    @ApiOperation(value = "添加或修改用户信息", httpMethod = "GET", notes = "添加或修改用户信息返回JSON")
+    public Object userSave(User user) {
         if (user.getId() == null) {
         	user.setRegtime(new Date());
             return userService.insert(user) ? renderSuccess("添加成功") : renderError("添加失败");

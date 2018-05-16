@@ -16,6 +16,8 @@ Spring + SpringMVC + MyBatis Plus
 #### 使用说明
 
 1. 个人借鉴Mybatis Plus的Demo加入BootStrapTable整合SSM做的一个小Demo
+2. Swagger UI:http://localhost:8080/swagger-ui.html
+3. Swagger-UI-Layer:http://localhost:8080/docs.html
 
 #### 参与贡献
 

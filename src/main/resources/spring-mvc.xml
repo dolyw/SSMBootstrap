@@ -117,6 +117,7 @@
 	<mvc:resources location="/static/" mapping="/static/**" />
 	<mvc:resources location="/upload/" mapping="/upload/**" />
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="docs.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 	
 	<!-- 上传限制 -->
