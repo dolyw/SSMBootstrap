@@ -10,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wang.model.User;
 import com.wang.service.IUserService;
@@ -42,13 +39,6 @@ public class UserController extends BaseController {
      * @return
      * @throws Exception
      */
-	// 直接获取User
-    /*@RequestMapping("/userList")
-	public String userList(Model model) throws Exception{
-		List<User> userList = userService.selectList(null);
-		model.addAttribute("userList", userList);
-		return "admin/user/userList";
-	}*/
     // AJAX获取User
     @ApiIgnore
     @RequestMapping("/userList")
@@ -59,10 +49,10 @@ public class UserController extends BaseController {
     @ResponseBody
 	@RequestMapping("/getUserList")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNumber", required = true, value = "页数", dataType = "String"),
-            @ApiImplicitParam(name = "pageSize", required = true, value = "条数", dataType = "String")
+            @ApiImplicitParam(name = "pageNumber", required = true, value = "页数", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", required = true, value = "条数", paramType = "query")
     })
-    @ApiOperation(value = "获取所有用户", httpMethod = "GET", notes = "获取所有用户返回JSON")
+    @ApiOperation(value = "获取所有用户", httpMethod = "POST", notes = "详细描述：返回JSON获", response = Object.class)
     public Object getUserList(String pageNumber, String pageSize, HttpServletRequest request) {
         if(!StringUtils.isNotBlank(pageNumber) & !StringUtils.isNotBlank(pageSize)){
             pageNumber="1";
@@ -85,10 +75,14 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userDelete")
-    @ApiImplicitParam(name = "id", required = true, value = "用户ID", dataType = "Long")
-    @ApiOperation(value = "删除单个用户", httpMethod = "GET", notes = "根据ID删除单个用户返回JSON")
-    public Object userDelete(@RequestParam(value = "id") Long id) {
-        return userService.deleteById(id) ? renderSuccess("删除成功") : renderError("删除失败");
+    @ApiImplicitParam(name = "id", required = true, value = "用户ID", paramType = "query")
+    @ApiOperation(value = "删除单个用户", httpMethod = "POST", notes = "详细描述：根据ID删除单个用户返回JSON", response = com.wang.util.JsonResult.class)
+    public Object userDelete(Long id) {
+        if (id != null) {
+            return userService.deleteById(id) ? renderSuccess("删除成功") : renderError("删除失败");
+        }
+        return renderError("删除失败");
+
     }
 
     /**
@@ -113,13 +107,19 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userSave")
-    @ApiResponses({
+    /*@ApiResponses({
             @ApiResponse(code = 200, message = "成功"),
             @ApiResponse(code = 204, message = "没有返回任何信息"),
             @ApiResponse(code = 401, message = "没有权限")
+    })*/
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", required = false, value = "用户ID", paramType = "query"),
+            @ApiImplicitParam(name = "account", required = false, value = "帐号", paramType = "query"),
+            @ApiImplicitParam(name = "password", required = false, value = "密码", paramType = "query"),
+            @ApiImplicitParam(name = "username", required = false, value = "用户名", paramType = "query")
     })
-    @ApiOperation(value = "添加或修改用户信息", httpMethod = "GET", notes = "添加或修改用户信息返回JSON")
-    public Object userSave(User user) {
+    @ApiOperation(value = "添加或修改用户信息", httpMethod = "POST", notes = "详细描述：返回JSON", response = com.wang.util.JsonResult.class)
+    public Object userSave(@ApiIgnore User user) {
         if (user.getId() == null) {
         	user.setRegtime(new Date());
             return userService.insert(user) ? renderSuccess("添加成功") : renderError("添加失败");

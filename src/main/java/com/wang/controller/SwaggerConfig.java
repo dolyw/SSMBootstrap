@@ -3,6 +3,7 @@ package com.wang.controller;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import springfox.documentation.annotations.ApiIgnore;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -28,7 +29,8 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.wang.controller")) // 注意修改此处的包名
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .ignoredParameterTypes(ApiIgnore.class);
     }
 
     private ApiInfo apiInfo() {

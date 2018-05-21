@@ -1,5 +1,8 @@
 package com.wang.util;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Author: D.Yang
  * Email: koyangslash@gmail.com
@@ -7,10 +10,15 @@ package com.wang.util;
  * Time: 下午5:50
  * Describe: 封装Json返回信息
  */
+@ApiModel(value="JsonResult",description="Json对象")
 public class JsonResult {
+    @ApiModelProperty(value="状态",name="success")
     private boolean success;
+    @ApiModelProperty(value="状态码",name="status")
     private String status;
+    @ApiModelProperty(value="信息",name="msg")
     private String msg;
+    @ApiModelProperty(value="对象",name="obj")
     private Object obj;
 
     public boolean isSuccess() {
