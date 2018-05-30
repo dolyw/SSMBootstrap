@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
+import com.wang.util.JsonListUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +29,12 @@ import springfox.documentation.annotations.ApiIgnore;
 public class UserController extends BaseController {
 	
 	private final IUserService userService;
+    private RedisTemplate redisTemplate;
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, RedisTemplate redisTemplate) {
         this.userService = userService;
+        this.redisTemplate = redisTemplate;
     }
 	
     /**
@@ -77,8 +81,11 @@ public class UserController extends BaseController {
     @RequestMapping("/userDelete")
     @ApiImplicitParam(name = "id", required = true, value = "用户ID", paramType = "query")
     @ApiOperation(value = "删除单个用户", httpMethod = "POST", notes = "详细描述：根据ID删除单个用户返回JSON", response = com.wang.util.JsonResult.class)
-    public Object userDelete(Long id) {
+    public Object userDelete(Long id) throws Exception{
         if (id != null) {
+            if(redisTemplate.hasKey("user:" + id)){
+                redisTemplate.delete("user:" + id);
+            }
             return userService.deleteById(id) ? renderSuccess("删除成功") : renderError("删除失败");
         }
         return renderError("删除失败");
@@ -93,9 +100,16 @@ public class UserController extends BaseController {
      */
 	@RequestMapping("/userEdit")
     @ApiIgnore
-    public String userEdit(Model model, @RequestParam(value = "id", required = false) Long id) {
+    public String userEdit(Model model, @RequestParam(value = "id", required = false) Long id) throws Exception{
 		if (id != null) {
-			model.addAttribute("user", userService.selectById(id));
+		    if(redisTemplate.hasKey("user:" + id)){
+                model.addAttribute("user", JsonListUtil.jsonToObject(
+                        (String) redisTemplate.opsForValue().get("user:" + id), User.class));
+            }else{
+                User user = userService.selectById(id);
+                redisTemplate.opsForValue().set("user:" + user.getId(), JsonListUtil.objectToJson(user));
+		        model.addAttribute("user", user);
+            }
         }
 		return "admin/user/userEdit";
     }
@@ -119,11 +133,14 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "username", required = false, value = "用户名", paramType = "query")
     })
     @ApiOperation(value = "添加或修改用户信息", httpMethod = "POST", notes = "详细描述：返回JSON", response = com.wang.util.JsonResult.class)
-    public Object userSave(@ApiIgnore User user) {
+    public Object userSave(@ApiIgnore User user) throws Exception {
         if (user.getId() == null) {
         	user.setRegtime(new Date());
             return userService.insert(user) ? renderSuccess("添加成功") : renderError("添加失败");
         } else {
+            if(redisTemplate.hasKey("user:" + user.getId())){
+                redisTemplate.delete("user:" + user.getId());
+            }
             return userService.updateById(user) ? renderSuccess("修改成功") : renderError("修改失败");
         }
     }

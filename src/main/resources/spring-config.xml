@@ -147,5 +147,7 @@
         <aop:pointcut id="transactionPointcut" expression="execution(* com.wang.service..*.*(..))"/>
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
     </aop:config>
+
+    <import resource="classpath:spring-redis.xml" />
     
 </beans>

@@ -3,14 +3,16 @@
 #### 项目介绍
 1. SSMyBatis Plus + BootStrapTable示例
 2. 新增Swagger整合测试
+3. 新增Redis测试
 
 #### 软件架构
 软件架构说明
-Spring + SpringMVC + MyBatis Plus
+Spring + SpringMVC + MyBatis Plus + Swagger + Redis
 
 #### 安装教程
 
 1. 解压后执行src\main\resources\sql\MySQL.sql脚本创建数据库和表
+2. Redis测试需要自行安装Redis服务，启动服务，端口密码默认
 2. 正常启动即可
 
 #### 使用说明
