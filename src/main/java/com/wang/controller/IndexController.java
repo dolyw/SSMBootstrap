@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * @Desc 主页
- * @Author Wang926454
- * @Date 2018/5/14 11:01
+ * TODO：IndexController
+ * @author Wang926454
+ * @date 2018/7/30 15:50
  */
 @Controller
 @RequestMapping("/index")

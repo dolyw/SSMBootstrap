@@ -20,7 +20,7 @@ import com.wang.service.IUserService;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * @Desc User操作Controller
+ * TODO：User操作Controller
  * @Author Wang926454
  * @Date 2018/5/14 11:02
  */
@@ -39,8 +39,11 @@ public class UserController extends BaseController {
     }
 	
     /**
-     * 获取所有User
-     * @return
+     * TODO：获取所有User
+     * @param 
+     * @return java.lang.String
+     * @author Wang926454
+     * @date 2018/7/30 15:53
      */
     @ApiIgnore
     @RequestMapping("/userList")
@@ -49,9 +52,13 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * @Desc AJAX获取User
-	 * @Author Wang926454
-	 * @Date 2018/7/30 10:46
+	 * TODO：AJAX获取User
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param request
+	 * @return java.lang.Object
+	 * @author Wang926454
+	 * @date 2018/7/30 15:53
 	 */
     @ResponseBody
 	@RequestMapping("/getUserList")
@@ -76,9 +83,11 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 删除User
+     * TODO：删除User
      * @param id
-     * @return
+     * @return java.lang.Object
+     * @author Wang926454
+     * @date 2018/7/30 15:54
      */
 	@ResponseBody
     @RequestMapping("/userDelete")
@@ -96,10 +105,12 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 编辑User
+     * TODO：编辑User
      * @param model
-     * @param id
-     * @return
+	 * @param id
+     * @return java.lang.String
+     * @author Wang926454
+     * @date 2018/7/30 15:54
      */
 	@RequestMapping("/userEdit")
     @ApiIgnore
@@ -118,9 +129,11 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 新增User
+     * TODO：新增User
      * @param user
-     * @return
+     * @return java.lang.Object
+     * @author Wang926454
+     * @date 2018/7/30 15:54
      */
 	@ResponseBody
     @RequestMapping("/userSave")

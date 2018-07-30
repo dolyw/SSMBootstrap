@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.List;
 
 /**
- * @Desc Json和对象List的互相转换，转List必须Json最外层加[]，转Object，Json最外层不要加[]
+ * TODO：Json和对象List的互相转换，转List必须Json最外层加[]，转Object，Json最外层不要加[]
  * @Author wang926454
  * @Date 2018/5/23 17:20
  */
