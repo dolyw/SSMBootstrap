@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Date: 16/8/31
  * Time: 下午5:50
  * Describe: 封装Json返回信息
+ * @Author: Wang926454
  */
 @ApiModel(value="JsonResult",description="Json对象")
 public class JsonResult {

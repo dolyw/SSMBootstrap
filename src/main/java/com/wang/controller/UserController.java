@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.wang.util.JsonListUtil;
+import com.wang.util.RedisKeys;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +40,19 @@ public class UserController extends BaseController {
 	
     /**
      * 获取所有User
-     * @param model
      * @return
-     * @throws Exception
      */
-    // AJAX获取User
     @ApiIgnore
     @RequestMapping("/userList")
 	public String userList() {
 		return "admin/user/userList";
 	}
 
+	/**
+	 * @Desc AJAX获取User
+	 * @Author Wang926454
+	 * @Date 2018/7/30 10:46
+	 */
     @ResponseBody
 	@RequestMapping("/getUserList")
     @ApiImplicitParams({
@@ -58,15 +61,15 @@ public class UserController extends BaseController {
     })
     @ApiOperation(value = "获取所有用户", httpMethod = "POST", notes = "详细描述：返回JSON获", response = Object.class)
     public Object getUserList(String pageNumber, String pageSize, HttpServletRequest request) {
-        if(!StringUtils.isNotBlank(pageNumber) & !StringUtils.isNotBlank(pageSize)){
-            pageNumber="1";
-            pageSize="10";
+        if(StringUtils.isBlank(pageNumber) && StringUtils.isBlank(pageSize)){
+            pageNumber = "1";
+            pageSize = "10";
         }
-        // 分页 pageNumber--》页数    pageSize--》每页显示数据的条数
+        // pageNumber--页数 pageSize--每页显示数据的条数
         Page<User> selectPage = userService
                 .selectPage(new Page<User>(Integer.parseInt(pageNumber), Integer.parseInt(pageSize)));
         // bootstrap-table要求服务器返回的json须包含：total，rows，用rows一直接收不到，改成data好了。。。
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(16);
         map.put("total", selectPage.getTotal());
         map.put("data", selectPage.getRecords());
         return map;
@@ -83,8 +86,8 @@ public class UserController extends BaseController {
     @ApiOperation(value = "删除单个用户", httpMethod = "POST", notes = "详细描述：根据ID删除单个用户返回JSON", response = com.wang.util.JsonResult.class)
     public Object userDelete(Long id) throws Exception{
         if (id != null) {
-            if(redisTemplate.hasKey("user:" + id)){
-                redisTemplate.delete("user:" + id);
+            if(redisTemplate.hasKey(RedisKeys.getUserKey(id.toString()))){
+                redisTemplate.delete(RedisKeys.getUserKey(id.toString()));
             }
             return userService.deleteById(id) ? renderSuccess("删除成功") : renderError("删除失败");
         }
@@ -102,12 +105,12 @@ public class UserController extends BaseController {
     @ApiIgnore
     public String userEdit(Model model, @RequestParam(value = "id", required = false) Long id) throws Exception{
 		if (id != null) {
-		    if(redisTemplate.hasKey("user:" + id)){
+		    if(redisTemplate.hasKey(RedisKeys.getUserKey(id.toString()))){
                 model.addAttribute("user", JsonListUtil.jsonToObject(
                         (String) redisTemplate.opsForValue().get("user:" + id), User.class));
             }else{
                 User user = userService.selectById(id);
-                redisTemplate.opsForValue().set("user:" + user.getId(), JsonListUtil.objectToJson(user));
+                redisTemplate.opsForValue().set(RedisKeys.getUserKey(user.getId().toString()), JsonListUtil.objectToJson(user));
 		        model.addAttribute("user", user);
             }
         }
@@ -121,11 +124,13 @@ public class UserController extends BaseController {
      */
 	@ResponseBody
     @RequestMapping("/userSave")
-    /*@ApiResponses({
+    /**
+     * @ApiResponses({
             @ApiResponse(code = 200, message = "成功"),
             @ApiResponse(code = 204, message = "没有返回任何信息"),
             @ApiResponse(code = 401, message = "没有权限")
-    })*/
+    })
+     */
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", required = false, value = "用户ID", paramType = "query"),
             @ApiImplicitParam(name = "account", required = false, value = "帐号", paramType = "query"),
@@ -138,8 +143,8 @@ public class UserController extends BaseController {
         	user.setRegtime(new Date());
             return userService.insert(user) ? renderSuccess("添加成功") : renderError("添加失败");
         } else {
-            if(redisTemplate.hasKey("user:" + user.getId())){
-                redisTemplate.delete("user:" + user.getId());
+            if(redisTemplate.hasKey(RedisKeys.getUserKey(user.getId().toString()))){
+                redisTemplate.delete(RedisKeys.getUserKey(user.getId().toString()));
             }
             return userService.updateById(user) ? renderSuccess("修改成功") : renderError("修改失败");
         }

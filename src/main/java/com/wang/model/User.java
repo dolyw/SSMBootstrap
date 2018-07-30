@@ -6,6 +6,11 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * @Desc User
+ * @Author: Wang926454
+ * @Date 2018/7/30 10:44
+ */
 @TableName("user")
 @ApiModel(value="User",description="用户对象user")
 public class User extends SuperEntity {

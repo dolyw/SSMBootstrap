@@ -6,15 +6,17 @@ package com.wang.util;
  * Date: 16/8/31
  * Time: 下午5:42
  * Describe: String工具类
+ * @Author: Wang926454
  */
 public class StringUtil {
 
-    // 定义下划线
+    /**
+     * 定义下划线
+     */
     private static final char UNDERLINE = '_';
 
     /**
      * String为空判断
-     *
      * @param str 需判断字符串
      * @return true:为空 false:不为空
      */
@@ -24,7 +26,6 @@ public class StringUtil {
 
     /**
      * String不为空判断
-     *
      * @param str 需判断字符串
      * @return true:不为空 false:为空
      */
@@ -34,7 +35,6 @@ public class StringUtil {
 
     /**
      * 驼峰转下划线工具
-     *
      * @param param 需要转换的字符串
      * @return 转换好的字符串
      */
@@ -61,7 +61,6 @@ public class StringUtil {
 
     /**
      * 下划线转驼峰工具
-     *
      * @param param 需要转换的字符串
      * @return 转换好的字符串
      */
@@ -87,7 +86,6 @@ public class StringUtil {
             return "";
         }
     }
-
 
     /**
      * 在字符串两周添加''

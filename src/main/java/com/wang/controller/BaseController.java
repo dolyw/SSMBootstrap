@@ -8,6 +8,7 @@ import com.wang.util.JsonResult;
  * Date: 16/10/9
  * Time: 下午1:37
  * Describe: 基础控制器，存放通用方法
+ * @Author: Wang926454
  */
 public class BaseController {
     /**

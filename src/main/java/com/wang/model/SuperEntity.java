@@ -8,6 +8,7 @@ import java.io.Serializable;
  * <p>
  * 自定义实体父类 ， 这里可以放一些公共字段信息
  * </p>
+ * @Author: Wang926454
  */
 public class SuperEntity implements Serializable {
 
