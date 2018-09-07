@@ -1,13 +1,13 @@
 package com.wang.util;
 
 /**
- * TODO：获取Redis的Key
+ * 获取Redis的Key
  * @Author Wang926454
  * @Date 2018/7/30 10:38
  */
 public class RedisKeys {
     /**
-     * TODO：获取用户ID
+     * 获取用户ID
      * @param key
      * @return java.lang.String
      * @author Wang926454

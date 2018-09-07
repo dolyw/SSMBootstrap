@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * TODO：IndexController
+ * IndexController
  * @author Wang926454
  * @date 2018/7/30 15:50
  */

@@ -20,7 +20,7 @@ import com.wang.service.IUserService;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * TODO：User操作Controller
+ * User操作Controller
  * @Author Wang926454
  * @Date 2018/5/14 11:02
  */
@@ -39,7 +39,7 @@ public class UserController extends BaseController {
     }
 	
     /**
-     * TODO：获取所有User
+     * 获取所有User
      * @param 
      * @return java.lang.String
      * @author Wang926454
@@ -52,7 +52,7 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * TODO：AJAX获取User
+	 * AJAX获取User
 	 * @param pageNumber
 	 * @param pageSize
 	 * @param request
@@ -83,7 +83,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * TODO：删除User
+     * 删除User
      * @param id
      * @return java.lang.Object
      * @author Wang926454
@@ -105,7 +105,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * TODO：编辑User
+     * 编辑User
      * @param model
 	 * @param id
      * @return java.lang.String
@@ -129,7 +129,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * TODO：新增User
+     * 新增User
      * @param user
      * @return java.lang.Object
      * @author Wang926454

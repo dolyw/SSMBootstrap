@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.wang.model.User;
 
 /**
- * TODO：UserMapper
+ * UserMapper
  * @Author: Wang926454
  * @Date 2018/7/30 10:44
  */
